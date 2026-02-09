@@ -1,4 +1,5 @@
 import { AppointmentSheet } from "@/components/appointment-sheet";
+import { CalendarView } from "@/components/calendar-view";
 import {
   HoverCard,
   HoverCardContent,
@@ -9,7 +10,7 @@ import { CircleQuestionMark } from "lucide-react";
 
 export default function CalendarioPage() {
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col h-svh overflow-hidden">
       {/* TODO: Refactor header, it should be in main-layout.tsx */}
       <header className="flex h-14 items-center px-4 gap-4">
         <SidebarTrigger />
@@ -20,7 +21,9 @@ export default function CalendarioPage() {
             <HoverCardTrigger asChild>
               <div className="flex items-center gap-1 cursor-help">
                 <CircleQuestionMark className="size-3.5 text-primary/80" />
-                <p className="text-sm text-primary/80">¿Cómo funciona?</p>
+                <p className="text-sm text-primary/80 hidden md:block">
+                  ¿Cómo funciona?
+                </p>
               </div>
             </HoverCardTrigger>
             <HoverCardContent className="flex w-64 flex-col gap-0.5">
@@ -32,17 +35,8 @@ export default function CalendarioPage() {
         <AppointmentSheet className="ml-auto" />
       </header>
 
-      {/* Placeholder para el calendario */}
-      <div className="flex h-150 items-center justify-center rounded-lg border-2 border-dashed bg-slate-50/50">
-        <div className="text-center">
-          <p className="text-lg font-medium text-muted-foreground">
-            Calendario
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Componente pendiente de implementar
-          </p>
-        </div>
-      </div>
+      {/* Calendario */}
+      <CalendarView />
     </div>
   );
 }

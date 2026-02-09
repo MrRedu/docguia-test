@@ -1,12 +1,12 @@
 import { NavSection } from "@/types/navigation";
 import {
   Bell,
+  Building2,
   Calendar,
   CreditCard,
   DollarSign,
   Gift,
   Home,
-  MapPin,
   Puzzle,
   Users,
 } from "lucide-react";
@@ -58,7 +58,7 @@ export const NAV_SECTIONS: NavSection[] = [
       {
         title: "Consultorios",
         href: "/consultorios",
-        icon: MapPin,
+        icon: Building2,
       },
       {
         title: "Servicios",
