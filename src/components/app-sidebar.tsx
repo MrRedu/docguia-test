@@ -29,7 +29,9 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="px-4 py-3">
-        <img src="/logo-white.webp" alt="Logo" width={120} height={120} />
+        <Link href="/" title="Ir al inicio">
+          <img src="/logo-white.webp" alt="Logo" width={120} height={120} />
+        </Link>
       </SidebarHeader>
 
       <SidebarContent className="mt-4">
