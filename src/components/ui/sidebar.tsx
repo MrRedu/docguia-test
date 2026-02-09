@@ -1,7 +1,7 @@
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { PanelLeftIcon, PanelRightCloseIcon } from "lucide-react";
+import { PanelRightCloseIcon } from "lucide-react";
 import { Slot } from "radix-ui";
 import * as React from "react";
 

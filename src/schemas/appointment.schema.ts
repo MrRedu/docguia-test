@@ -6,7 +6,7 @@ export const appointmentSchema = z.object({
   date: z.date({ message: "La fecha es requerida" }),
   time: z.string().min(1, "La hora es requerida"),
   serviceIds: z.array(z.string()).min(1, "Seleccione al menos un servicio"),
-  duration: z.number().min(5, "La duración mínima es 5 min").default(30),
+  duration: z.number().min(5, "La duración mínima es 5 min"),
   internalNotes: z.string().optional(),
   reason: z.string().optional(),
 });

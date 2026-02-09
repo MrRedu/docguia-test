@@ -5,7 +5,7 @@ import {
   type AppointmentFormValues,
 } from "@/schemas/appointment.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 
 interface UseAppointmentFormProps {
   onSubmit: (values: AppointmentFormValues) => void;
@@ -21,14 +21,14 @@ export function useAppointmentForm({
     defaultValues: {
       patientId: "",
       officeId: "",
-      date: undefined,
+      date: undefined as unknown as Date,
       time: "",
       serviceIds: [],
       duration: 30,
       internalNotes: "",
       reason: "",
       ...defaultValues,
-    },
+    } as AppointmentFormValues,
   });
 
   const handleSubmit = form.handleSubmit((values) => {
@@ -36,7 +36,7 @@ export function useAppointmentForm({
   });
 
   return {
-    form,
+    form: form as unknown as UseFormReturn<AppointmentFormValues>,
     handleSubmit,
     isLoading: form.formState.isSubmitting,
   };

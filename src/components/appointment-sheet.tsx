@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -37,7 +38,7 @@ import { cn } from "@/lib/utils";
 import { AppointmentFormValues } from "@/schemas/appointment.schema";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { CalendarIcon, Plus } from "lucide-react";
+import { CalendarIcon, Plus, X } from "lucide-react";
 
 // Mock data
 const PATIENTS = [
@@ -49,6 +50,12 @@ const PATIENTS = [
 const OFFICES = [
   { id: "1", name: "Consultorio Principal" },
   { id: "2", name: "Sede Norte" },
+];
+
+const SERVICES = [
+  { id: "1", name: "Consulta General" },
+  { id: "2", name: "Limpieza Dental" },
+  { id: "3", name: "Control" },
 ];
 
 const TIMES = Array.from({ length: 24 }).flatMap((_, h) =>
@@ -68,7 +75,6 @@ export function AppointmentSheet({
     onSubmit: (values) => {
       console.log("Cita creada:", values);
       onSuccess?.(values);
-
       form.reset();
     },
   });
@@ -106,10 +112,7 @@ export function AppointmentSheet({
                       Añadir paciente +
                     </Button>
                   </div>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Buscar paciente" />
@@ -137,10 +140,7 @@ export function AppointmentSheet({
                   <FormLabel>
                     Consultorio <span className="text-destructive">*</span>
                   </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Selecciona un consultorio" />
@@ -213,16 +213,13 @@ export function AppointmentSheet({
                     <FormLabel>
                       Hora <span className="text-destructive">*</span>
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Hora" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent position="popper">
                         {TIMES.map((t) => (
                           <SelectItem key={t} value={t}>
                             {t}
@@ -242,45 +239,52 @@ export function AppointmentSheet({
               name="serviceIds"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Servicios</FormLabel>
                   <Select
-                    onValueChange={(val) =>
-                      field.onChange([...field.value, val])
-                    }
+                    onValueChange={(val) => {
+                      if (!field.value.includes(val)) {
+                        field.onChange([...field.value, val]);
+                      }
+                    }}
+                    value=""
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Seleccionar servicios..." />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="1">Consulta General</SelectItem>
-                      <SelectItem value="2">Limpieza Dental</SelectItem>
-                      <SelectItem value="3">Control</SelectItem>
+                    <SelectContent position="popper">
+                      {SERVICES.map((s) => (
+                        <SelectItem key={s.id} value={s.id}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {field.value.map((id) => (
-                      <div
-                        key={id}
-                        className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full flex items-center gap-1"
-                      >
-                        {id === "1"
-                          ? "Consulta General"
-                          : id === "2"
-                            ? "Limpieza Dental"
-                            : "Control"}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            field.onChange(field.value.filter((i) => i !== id))
-                          }
-                          className="hover:text-primary/70"
+                    {field.value.map((id) => {
+                      const service = SERVICES.find((s) => s.id === id);
+                      if (!service) return null;
+                      return (
+                        <Badge
+                          key={id}
+                          variant="secondary"
+                          className="bg-primary/10 text-primary hover:bg-primary/20 border-none px-2 py-1 flex items-center gap-1"
                         >
-                          ×
-                        </button>
-                      </div>
-                    ))}
+                          {service.name}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              field.onChange(
+                                field.value.filter((i: string) => i !== id)
+                              )
+                            }
+                            className="hover:text-primary/70 cursor-pointer p-0.5"
+                          >
+                            <X className="size-3" />
+                          </button>
+                        </Badge>
+                      );
+                    })}
                   </div>
                   <FormMessage />
                 </FormItem>
