@@ -57,6 +57,7 @@ export function AppointmentSheet({
       console.log("Cita creada:", values);
       appointmentStorage.saveAppointment(values);
       onSuccess?.(values);
+
       form.reset();
     },
   });
@@ -155,16 +156,18 @@ export function AppointmentSheet({
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
-                            variant={"outline"}
+                            variant="outline"
                             className={cn(
-                              "w-full pl-3 text-left font-normal bg-white",
+                              "w-full pl-3 overflow-hidden flex items-center justify-between",
                               !field.value && "text-muted-foreground"
                             )}
                           >
                             {field.value ? (
                               format(field.value, "PPP", { locale: es })
                             ) : (
-                              <span>Selecciona una fecha</span>
+                              <span className="text-muted-foreground">
+                                Selecciona una fecha
+                              </span>
                             )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
