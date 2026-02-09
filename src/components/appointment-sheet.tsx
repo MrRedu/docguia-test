@@ -34,33 +34,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useAppointmentForm } from "@/hooks/use-appointment-form";
+import { appointmentStorage } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import { AppointmentFormValues } from "@/schemas/appointment.schema";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { CalendarIcon, Plus, X } from "lucide-react";
 
-// Mock data
-const PATIENTS = [
-  { id: "1", name: "María Pérez" },
-  { id: "2", name: "Juan Rodríguez" },
-  { id: "3", name: "Carlos Sánchez" },
-];
-
-const OFFICES = [
-  { id: "1", name: "Consultorio Principal" },
-  { id: "2", name: "Sede Norte" },
-];
-
-const SERVICES = [
-  { id: "1", name: "Consulta General" },
-  { id: "2", name: "Limpieza Dental" },
-  { id: "3", name: "Control" },
-];
-
-const TIMES = Array.from({ length: 24 }).flatMap((_, h) =>
-  ["00", "30"].map((m) => `${h.toString().padStart(2, "0")}:${m}`)
-);
+import { OFFICES, PATIENTS, SERVICES, TIMES } from "@/lib/constants";
 
 interface AppointmentSheetProps {
   onSuccess?: (values: AppointmentFormValues) => void;
@@ -74,6 +55,7 @@ export function AppointmentSheet({
   const { form, handleSubmit, isLoading } = useAppointmentForm({
     onSubmit: (values) => {
       console.log("Cita creada:", values);
+      appointmentStorage.saveAppointment(values);
       onSuccess?.(values);
       form.reset();
     },
