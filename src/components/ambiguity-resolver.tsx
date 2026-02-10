@@ -57,8 +57,8 @@ export function AmbiguityResolver({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="sm:max-w-106.25 p-0 overflow-hidden border-none shadow-2xl">
-        <div className="bg-primary/5 p-6 space-y-4">
+      <AlertDialogContent className="sm:max-w-106.25 p-0 overflow-hidden border-none shadow-2xl bg-background">
+        <div className="p-6 space-y-4">
           <AlertDialogHeader className="flex flex-row items-center gap-3 space-y-0">
             <div className="bg-primary/10 p-2 rounded-full">
               <Clock className="w-5 h-5 text-primary" />
@@ -115,7 +115,7 @@ export function AmbiguityResolver({
                 type="button"
                 onClick={() => handleSelectMeridiem(false)}
                 className={cn(
-                  "group p-4 rounded-2xl border-2 transition-all text-center space-y-2",
+                  "group p-4 rounded-2xl border-2 transition-all text-center space-y-2 cursor-pointer",
                   resolvedTime && parseInt(resolvedTime.split(":")[0]) < 12
                     ? "bg-primary/10 border-primary shadow-inner"
                     : "bg-white border-transparent shadow-sm hover:border-primary/30"
@@ -142,7 +142,7 @@ export function AmbiguityResolver({
                 type="button"
                 onClick={() => handleSelectMeridiem(true)}
                 className={cn(
-                  "group p-4 rounded-2xl border-2 transition-all text-center space-y-2",
+                  "group p-4 rounded-2xl border-2 transition-all text-center space-y-2 cursor-pointer",
                   resolvedTime && parseInt(resolvedTime.split(":")[0]) >= 12
                     ? "bg-primary/10 border-primary shadow-inner"
                     : "bg-white border-transparent shadow-sm hover:border-primary/30"
@@ -168,7 +168,7 @@ export function AmbiguityResolver({
         </div>
 
         <div className="p-4 flex items-center justify-between border-t gap-4">
-          <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
+          <Button variant="ghost" onClick={() => onOpenChange(false)}>
             Cancelar y editar manual
           </Button>
           <Button
@@ -181,7 +181,7 @@ export function AmbiguityResolver({
                 : "bg-slate-100 text-slate-400 shadow-none"
             )}
           >
-            Confirmar cita
+            Confirmar hora
           </Button>
         </div>
       </AlertDialogContent>
