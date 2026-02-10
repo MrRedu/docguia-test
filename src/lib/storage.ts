@@ -60,4 +60,32 @@ export const appointmentStorage = {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
     window.dispatchEvent(new Event("appointments-updated"));
   },
+
+  checkAvailability: (
+    date: Date,
+    time: string,
+    duration: number,
+    excludeId?: string
+  ): boolean => {
+    const events = appointmentStorage.getEvents();
+    const [hours, minutes] = time.split(":").map(Number);
+
+    // Create start and end time for the potential new appointment
+    const newStart = new Date(date);
+    newStart.setHours(hours, minutes, 0, 0);
+    const newEnd = addMinutes(newStart, duration);
+
+    // Check for overlaps with existing events
+    return !events.some((event) => {
+      if (excludeId && event.id === excludeId) return false;
+
+      const existingStart = new Date(event.start);
+      const existingEnd = new Date(event.end);
+
+      // Overlap condition:
+      // (StartA <= EndB) and (EndA >= StartB)
+      // Actually strictly talking, overlap is usually StartA < EndB && EndA > StartB
+      return newStart < existingEnd && newEnd > existingStart;
+    });
+  },
 };

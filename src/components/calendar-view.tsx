@@ -225,7 +225,7 @@ export function CalendarView() {
               return (
                 <Popover>
                   <PopoverTrigger asChild>
-                    <div className="flex flex-col bg-secondary h-full justify-center p-1 overflow-hidden text-primary rounded border border-l-3 border-primary cursor-pointer">
+                    <div className="flex flex-col bg-secondary h-full justify-start p-1 overflow-hidden text-primary rounded border border-l-3 border-primary cursor-pointer">
                       <p className="font-semibold text-xs">
                         {eventInfo.event.title}
                       </p>
