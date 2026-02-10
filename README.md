@@ -2,82 +2,112 @@
 
 Este proyecto es una prueba técnica para DocGuía que consiste en construir un módulo de calendario con la funcionalidad de crear citas mediante comandos de voz.
 
+## 🔗 Demo y Repositorio
+
+- **URL Pública**: [docguia.vercel.app](https://docguia.vercel.app/)
+- **Repositorio**: [Link al repositorio](https://github.com/MrRedu/docguia-test)
+
 ## 🎯 Objetivo del Challenge
 
-1. **Emular el UI** del calendario existente de DocGuía
-2. Permitir **crear citas por voz**, transformando lo dictado en datos estructurados
-3. Mostrar las citas creadas reflejadas en el calendario
+Construir un mini-módulo de calendario que:
+
+1. **Emule el UI** del calendario mostrado en las capturas (look & feel, jerarquía, spacing, componentes clave).
+2. Permita **crear citas por voz**, transformando lo dictado en datos estructurados (fecha, hora, paciente/cliente, motivo, duración, notas, etc.).
+3. Muestre la cita creada reflejada en el calendario.
 
 ## 🛠️ Stack Tecnológico
 
-- **Framework**: Next.js 15+ (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Lenguaje**: TypeScript
 - **Estilos**: Tailwind CSS v4
-- **Componentes UI**: Shadcn/ui (tema slate/púrpura)
+- **Componentes UI**: Shadcn/ui (Radix UI) + Lucide Icons
 - **Formularios**: React Hook Form + Zod
-- **Linting**: ESLint + Prettier
-- **Package Manager**: npm
+- **Manejo de Fechas**: date-fns
+- **Reconocimiento de Voz**: Web Speech API (Nativa del navegador)
 
-## 📁 Estructura del Proyecto
+## 💡 Decisiones de UX/UI
 
-```
-src/
-├── app/              # App Router de Next.js
-├── components/
-│   ├── ui/          # Componentes de Shadcn/ui
-│   └── ...          # Componentes custom
-├── hooks/           # Custom hooks (incluye lógica de formularios)
-├── schemas/         # Schemas de validación con Zod
-├── types/           # Definiciones de TypeScript
-├── lib/             # Utilidades y helpers
-│   └── cookies/     # Manejo de cookies (sidebar state)
-└── constants/       # Constantes de la aplicación
-```
+### 1. Experiencia "Voice-First" pero con control
 
-## 🚀 Instalación y Desarrollo
+La interacción de voz fue diseñada para ser una ayuda rápida, no una "caja negra".
+
+- **Feedback Visual**: Implementamos el componente `VoiceWave` que reacciona al estado de "escuchando", dando feedback inmediato al usuario.
+- **Transcripción en Tiempo Real**: El usuario ve lo que el sistema está entendiendo mientras habla.
+- **Edición Manual**: Si la voz falla, todos los campos se pueden corregir manualmente antes de guardar.
+
+### 2. Manejo de Ambigüedades (AmbiguityResolver)
+
+Uno de los mayores retos de la voz es la falta de precisión.
+
+- **Caso AM/PM**: Si el usuario dice "a las 7", el sistema detecta la hora pero marca una ambigüedad (`time_meridiem`). Al dejar de hablar, se lanza el modal `AmbiguityResolver` permitiendo al usuario elegir rápidamente si se refería a la mañana o la noche con un solo clic.
+- **Fechas Relativas**: El parser entiende "mañana", "pasado mañana", "hoy", "el lunes", etc., convirtiéndolos automáticamente a fechas concretas.
+
+### 3. Emulación Visual
+
+Se ha replicado fielmente el diseño original utilizando:
+
+- **Sidebar persistente**: Navegación clara y jerarquía visual.
+
+## ⚙️ Decisiones Técnicas
+
+### Arquitectura "Client-Side" para Voz
+
+Se optó por usar la **Web Speech API** nativa del navegador en lugar de una API externa (como Whisper) por:
+
+- **Latencia Cero**: Feedback instantáneo al usuario.
+- **Privacidad**: El audio no sale del dispositivo.
+- **Costo**: Gratuito y sin necesidad de gestionar keys de API para la prueba.
+
+### Parsing (Reglas + Keywords)
+
+El `voiceParser` (`src/lib/voice-parser.ts`) utiliza una estrategia determinista basada en:
+
+1. **Extracción de Entidades**: Búsqueda de pacientes y servicios conocidos en el texto.
+2. **Regex para Tiempos**: Expresiones regulares robustas para capturar horas en múltiples formatos ("7pm", "a las 7", "7:30").
+3. **Mapeo de Lenguaje Natural**: Conversión de "media hora" a `30`, "mañana" a valid dates, etc.
+
+Esta aproximación es más predecible y rápida que usar un LLM para tareas simples de estructuración.
+
+### Persistencia Local
+
+Dado que no se requería backend real:
+
+- Se implementó `appointmentStorage` (`src/lib/storage.ts`) usando `localStorage`.
+- Se usa un patrón de eventos (`window.dispatchEvent`) para sincronizar el estado entre el formulario de creación y la vista del calendario sin necesidad de un contexto global complejo.
+
+## ✅ Funcionalidades Implementadas
+
+- [x] Vista de Calendario Semanal
+- [x] Creación de Citas (Formulario Slide-over)
+- [x] **Input de Voz** con transcripción en vivo
+- [x] Parsing inteligente de:
+  - Pacientes (mencionar nombre)
+  - Servicios (mencionar tipo de consulta)
+  - Fechas (relativas y absolutas)
+  - Horas y Duración
+- [x] **Resolución de Conflictos**: El sistema valida si el horario ya está ocupado antes de guardar.
+- [x] **Manejo de Ambigüedad**: UI dedicada para aclarar AM/PM.
+
+## 🚀 Cómo correr el proyecto
 
 ```bash
 # Instalar dependencias
 npm install
 
-# Ejecutar servidor de desarrollo
+# Correr servidor de desarrollo
 npm run dev
 
-# Build de producción
-npm run build
-
-# Iniciar producción
-npm start
-
-# Linting
-npm run lint
-
-# Format con Prettier
-npm run format
+# Abrir en navegador
+http://localhost:3000
 ```
 
-## 📝 Decisiones de UX
+## 🔮 Conclusiones y Futuro
 
-### Manejo de Ambigüedades en Creación por Voz
+El sistema actual cumple con ser funcional y robusto para los casos de uso definidos. Para llevarlo a producción, los siguientes pasos serían:
 
-_[Pendiente de implementar]_
-
-- **"A las 7"** (am/pm): Se asumirá horario laboral (7 AM si es antes de 12 PM del día actual, 7 PM si es después)
-- **"Mañana en la tarde"**: Se solicitará hora específica con sugerencias
-- **Duración no especificada**: 30 minutos por defecto
-- **Follow-up questions**: Modal de confirmación con campos editables antes de guardar
-
-### Calendario
-
-_[Evaluando opciones]_
-
-Opciones consideradas:
-
-1. FullCalendar.io - Vista semanal completa
-2. React Big Calendar - Más liviano
-3. Custom Component - Control total del diseño
-
-## 🎨 UI/UX
+1. **Integración con LLM**: Para entender frases más complejas como "mueve la cita del viernes para hoy", un LLM pequeño sería ideal.
+2. **Backend Real**: Migrar `localStorage` a una base de datos (PostgreSQL/Supabase).
+3. **Tests E2E**: Añadir Cypress/Playwright para probar el flujo de voz (mockeando la API de speech).
 
 ### Componentes Principales
 
@@ -89,21 +119,10 @@ Opciones consideradas:
 - **Calendario**: Vista semanal con slots de tiempo
 - **Formulario de Citas**: Con validación y preview antes de guardar
 
-## 🔮 Mejoras Futuras
-
-- [ ] Detección de conflictos de horario
-- [ ] Edición de citas por voz
-- [ ] Draft mode para transcripciones
-- [ ] Soporte de formatos locales ("pasado mañana", "tardecita")
-- [ ] Tests unitarios y E2E
-
 ## 📚 Recursos
 
 - [Notion - Interview Test](https://www.notion.so/Interview-Test-3028a66068d880c2ac80d8cf4cfe8104)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Shadcn/ui Documentation](https://ui.shadcn.com)
-- [React Hook Form](https://react-hook-form.com)
 
 ---
 
-Desarrollado para DocGuía - Prueba Técnica 2026
+Desarrollado para la prueba técnica de **DocGuía** - 2026
