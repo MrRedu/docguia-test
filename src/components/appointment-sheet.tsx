@@ -1,6 +1,5 @@
 "use client";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -54,6 +53,7 @@ import { AmbiguityResolver } from "@/components/ambiguity-resolver";
 import { VoiceWave } from "@/components/voice-wave";
 import { useCalendarSpeech } from "@/hooks/use-calendar-speech";
 import { OFFICES, PATIENTS, SERVICES, TIMES } from "@/lib/constants";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { VoicePromo } from "./voice-promo";
 
@@ -183,17 +183,6 @@ export function AppointmentSheet({
             className="flex flex-col flex-1 overflow-hidden"
           >
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {conflictError && (
-                <Alert
-                  variant="destructive"
-                  className="animate-in fade-in slide-in-from-top-2"
-                >
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Conflicto de horario</AlertTitle>
-                  <AlertDescription>{conflictError}</AlertDescription>
-                </Alert>
-              )}
-              {/* Voice Promo when not listening */}
               {!isListening && <VoicePromo onClick={handleVoiceToggle} />}
 
               {isListening && (
@@ -506,6 +495,17 @@ export function AppointmentSheet({
                 </Button>
               </div>
             </div>
+
+            {conflictError && (
+              <Alert
+                variant="destructive"
+                className="rounded-none border-b-none"
+              >
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Conflicto de horario</AlertTitle>
+                <AlertDescription>{conflictError}</AlertDescription>
+              </Alert>
+            )}
 
             <SheetFooter className="border-t pt-4 mt-auto">
               <div className="flex w-full gap-3">
