@@ -129,27 +129,24 @@ export function CalendarView() {
         <div className="flex items-center rounded-full border bg-muted/50">
           <Button
             variant="ghost"
-            size="sm"
             onClick={() => handleViewChange("timeGridWeek")}
-            className="h-7 px-3 text-xs font-medium data-[active=true]:bg-white data-[active=true]:border data-[active=true]:text-primary transition-all rounded-full"
+            className=" px-3 text-xs font-medium data-[active=true]:bg-white data-[active=true]:border data-[active=true]:text-primary transition-all rounded-full"
             data-active={currentView === "timeGridWeek"}
           >
             Semana
           </Button>
           <Button
             variant="ghost"
-            size="sm"
             onClick={() => handleViewChange("timeGridDay")}
-            className="h-7 px-3 text-xs font-medium data-[active=true]:bg-white data-[active=true]:border data-[active=true]:text-primary transition-all rounded-full"
+            className=" px-3 text-xs font-medium data-[active=true]:bg-white data-[active=true]:border data-[active=true]:text-primary transition-all rounded-full"
             data-active={currentView === "timeGridDay"}
           >
             Día
           </Button>
           <Button
             variant="ghost"
-            size="sm"
             onClick={() => handleViewChange("listWeek")}
-            className="h-7 px-3 text-xs font-medium data-[active=true]:bg-white data-[active=true]:border data-[active=true]:text-primary transition-all rounded-full"
+            className=" px-3 text-xs font-medium data-[active=true]:bg-white data-[active=true]:border data-[active=true]:text-primary transition-all rounded-full"
             data-active={currentView === "listWeek"}
           >
             Lista
