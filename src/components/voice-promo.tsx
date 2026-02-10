@@ -8,7 +8,7 @@ interface VoicePromoProps {
 
 const EXAMPLES = [
   `"Mañana a las 10am con Juan"`,
-  // `"Cita para el viernes a las 4"`,
+  `"Cita para el viernes a las 4"`,
 ];
 
 export function VoicePromo({ onClick, className }: VoicePromoProps) {
@@ -16,7 +16,7 @@ export function VoicePromo({ onClick, className }: VoicePromoProps) {
     <div
       onClick={onClick}
       className={cn(
-        "border-2 border-dashed border-primary/20 rounded-4xl py-4 px-2 flex flex-col items-center justify-center text-center gap-4 cursor-pointer hover:bg-primary/5 transition-all group bg-background relative overflow-hidden",
+        "border-2 border-dashed border-primary/20 rounded-xl py-4 px-2 flex flex-col items-center justify-center text-center gap-4 cursor-pointer hover:bg-primary/5 transition-all group bg-background relative overflow-hidden",
         className
       )}
     >
@@ -46,7 +46,7 @@ export function VoicePromo({ onClick, className }: VoicePromoProps) {
           {EXAMPLES.map((example) => (
             <div
               key={example}
-              className="bg-background border rounded-full px-4 py-2 text-xs font-medium text-muted-foreground shadow-sm w-fit mx-auto group-hover:scale-105 transition-transform duration-300"
+              className="bg-background border rounded-full px-4 py-2 text-xs font-medium text-muted-foreground shadow-sm w-fit mx-auto group-hover:scale-101 transition-transform duration-300"
             >
               {example}
             </div>

@@ -43,7 +43,6 @@ import {
   AlertCircle,
   CalendarIcon,
   CheckCircle,
-  Mic,
   Pause,
   Plus,
   Sparkles,
@@ -56,6 +55,7 @@ import { VoiceWave } from "@/components/voice-wave";
 import { useCalendarSpeech } from "@/hooks/use-calendar-speech";
 import { OFFICES, PATIENTS, SERVICES, TIMES } from "@/lib/constants";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { VoicePromo } from "./voice-promo";
 
 interface AppointmentSheetProps {
   onSuccess?: (values: AppointmentFormValues) => void;
@@ -156,19 +156,11 @@ export function AppointmentSheet({
         </Button>
       </SheetTrigger>
       <SheetContent
-        showCloseButton={false}
+        // showCloseButton={false}
         className="w-full sm:max-w-125 flex flex-col h-full p-0 gap-0"
       >
         <SheetHeader className="border-b pb-4 px-6 flex-row items-center justify-between space-y-0">
           <SheetTitle>Agendar nueva cita</SheetTitle>
-          <Button
-            className=""
-            variant="ghost"
-            size="icon"
-            onClick={handleVoiceToggle}
-          >
-            <Mic className="h-4 w-4" />
-          </Button>
         </SheetHeader>
 
         <AmbiguityResolver
@@ -202,7 +194,7 @@ export function AppointmentSheet({
                 </Alert>
               )}
               {/* Voice Promo when not listening */}
-              {/* {!isListening && <VoicePromo onClick={handleVoiceToggle} />} */}
+              {!isListening && <VoicePromo onClick={handleVoiceToggle} />}
 
               {isListening && (
                 <div className="bg-primary/5 rounded-2xl p-6 border border-primary/10 space-y-4 animate-in fade-in slide-in-from-top-4">
