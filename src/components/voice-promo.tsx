@@ -16,10 +16,11 @@ export function VoicePromo({ onClick, className }: VoicePromoProps) {
     <div
       onClick={onClick}
       className={cn(
-        "border-2 border-dashed border-primary/20 rounded-md py-4 px-2 flex flex-col items-center justify-center text-center gap-4 cursor-pointer hover:bg-primary/5 transition-all group bg-background relative overflow-hidden",
+        "border-2 border-dashed border-primary/20 rounded-4xl py-4 px-2 flex flex-col items-center justify-center text-center gap-4 cursor-pointer hover:bg-primary/5 transition-all group bg-background relative overflow-hidden",
         className
       )}
     >
+      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-50" />
 
       <div className="flex items-center gap-4">
@@ -37,7 +38,7 @@ export function VoicePromo({ onClick, className }: VoicePromoProps) {
         </div>
       </div>
 
-      {/* <div className="relative z-10 flex flex-col items-center gap-1 w-full pt-2">
+      <div className="relative z-10 flex flex-col items-center gap-1 w-full pt-2">
         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-widest">
           Prueba a decir:
         </span>
@@ -51,7 +52,7 @@ export function VoicePromo({ onClick, className }: VoicePromoProps) {
             </div>
           ))}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
